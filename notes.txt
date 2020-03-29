@@ -1,0 +1,18 @@
+# collecting columns names
+py .\feature_explore.py -d '.\data\Original Dataframes\RNA_filter_std.pkl' -o .\data\Features\RNA_filter_feats.pkl -c True
+py .\feature_explore.py -d '.\data\Original Dataframes\DNA_filter_std.pkl' -o .\data\Features\DNA_filter_feats.pkl -c True
+py .\feature_explore.py -d '.\data\Original Dataframes\RNA_diff_std.pkl' -o .\data\Features\RNA_diff_feats.pkl -c True
+py .\feature_explore.py -d '.\data\Original Dataframes\DNA_diff_std.pkl' -o .\data\Features\DNA_diff_feats.pkl -c True
+
+# assembling all features into sets, creating list of family objects to store data about each family
+py .\feature_explore.py -d '.\data\Features\' -o .\data\GeneFamilies\ -s True
+
+# adding urls to each object
+py .\feature_explore.py -d '.\data\GeneFamilies\protein_families.pkl' -o .\data\GeneFamilies\protein_families_urls.pkl -u True
+# 30,259 urls assigned, 29,922 not found
+
+# memory error when trying to download all family info
+# restarting, reassigning URLs only for representative cluster member
+# refactor worked perfectly, assigned every url in about 11 minutes
+
+py .\feature_explore.py -d '.\data\GeneFamilies\protein_families.pkl' -o .\data\GeneFamilies\ -url True

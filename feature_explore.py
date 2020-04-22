@@ -72,16 +72,16 @@ def build_sets(data_path, destination):
 #
 def get_urls(fam):#, destination):
     cluster = fam.ID.split('_')[1]  # extract cluster name
-    url = f'https://www.uniprot.org/uniprot/?query=accession:{cluster}&format=tab'         
-    if fam.UniRef_URL is None:  # only try if the previous ones did not work
+    if cluster[:3] == 'UPI':
+        url = f'https://www.uniprot.org/uniparc/{cluster}.tab'
+    else:
+        url = f'https://www.uniprot.org/uniprot/?query=accession:{cluster}&format=tab'
+    if fam.UniRef_URL is None:  
         try:
             res = requests.head(url)
             # save URL if it works
             if res.status_code == 200:
-                print(cluster + ' works')
                 fam.UniRef_URL = url
-            else:
-                print(url + ' bad url')
         except:
             print('Something went wrong')
 # end get_urls() ------------------------------------------------------------------------------------------------------------------------------------------
@@ -97,7 +97,6 @@ def download_data(fam):
             df = pd.DataFrame(tab[1:],columns=tab[0])
             # add to family object
             fam.UniRef_result = df
-            # print(f'{fam.ID} data downloaded')
         except:
             print('Something went wrong')
 # end download_data() -------------------------------------------------------------------------------------------------------------------------------------
@@ -139,18 +138,46 @@ if args.download:
     with cf.ThreadPoolExecutor() as executor:
         list(tqdm(executor.map(download_data, data), total = len(data)))
 
-yes, no = 0,0
+# yes, no = 0,0
 shapes = set()
+ct = 0
+s27 = 0
 for fam in data:
-    shapes.add(fam.UniRef_result.shape)
+    cluster = fam.ID.split('_')[1]  # extract cluster name
+    if cluster[:3] == 'UPI':
+        s = fam.UniRef_result.shape
+        if s == (2,7):
+            s27 += 1
 
-print(yes,no)
-for shape in shapes:
-    for fam in data:
-        if fam.UniRef_result.shape == shape:
-            print(shape)
-            print(fam)
-            break
+        shapes.add(s)
+        ct += 1
+print(ct,s27) 
+print(shapes)
+    # shapes.add(fam.UniRef_result.shape)
+
+# # print(yes,no)
+# for shape in shapes:
+#     for fam in data:
+#         if fam.UniRef_result.shape == shape:
+#             print(shape)
+#             # print(fam)
+#             break
+
+# tests = ['UPI0001A25914', 'UPI0003ED083A','UPI0001631492']
+
+# bad = 0
+# for fam in data: 
+#     cluster = fam.ID.split('_')[1]  # extract cluster name
+#     if cluster in tests:
+#         print(fam.ID, True)
+#     if fam.UniRef_result.shape == (0,1):
+#         bad += 1
+#         # print(fam.ID, fam.UniRef_URL)
+#         fam.UniRef_result = None
+#         fam.UniRef_URL = None
+#         print(fam.ID)
+# print(bad)
+
 if args.save:
     pickle.dump(data, open(destination + 'fam_urls.pkl', 'wb'))
 

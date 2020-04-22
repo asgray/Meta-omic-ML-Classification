@@ -15,4 +15,9 @@ py .\feature_explore.py -d '.\data\GeneFamilies\protein_families.pkl' -o .\data\
 # restarting, reassigning URLs only for representative cluster member
 # refactor worked perfectly, assigned every url in about 11 minutes
 
-py .\feature_explore.py -d '.\data\GeneFamilies\protein_families.pkl' -o .\data\GeneFamilies\ -url True
+py .\feature_explore.py -d '.\data\GeneFamilies\protein_families.pkl' -o .\data\GeneFamilies\ -url True -dl True -save True
+
+# all data downloaded except for: UniRef90_R6HIV7, UniRef90_W6NQH8, UniRef90_unknown, UniRef90_B0A7G5
+UniRef90_R6HIV7 - obsolete, replaced by A0A0M1W465
+UniRef90_W6NQH8 - obsolete, part of UPI0003ED083A
+UniRef90_B0A7G5 - obsolete, part of UPI0001631492

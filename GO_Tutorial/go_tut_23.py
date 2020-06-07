@@ -4,22 +4,9 @@ from urllib.request import urlopen
 import json
 from pprint import pprint
 from terminaltables import AsciiTable
+from go_utils import get_term
 
-def get_term(go_id):
-    """
-        This function retrieves the definition of a given Gene Ontology term,
-        using EMBL-EBI's QuickGO browser.
-        Input: go_id - a valid Gene Ontology ID, e.g. GO:0048527.
-    """
-    quickgo_url = "https://www.ebi.ac.uk/QuickGO/services/ontology/go/terms/" + go_id
-    ret = urlopen(quickgo_url)
-    
-    # Check the response
-    if(ret.getcode() == 200):
-        term = json.loads(ret.read())
-        return term['results'][0]
-    else:
-        raise ValueError("Couldn't receive information from QuickGO. Check GO ID and try again.")
+# compares dict and xml structures of info
 
 id1 = 'GO:0048527'
 id2 = 'GO:0097178'

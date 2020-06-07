@@ -1,1 +1,3 @@
 data/*
+GO_Tutorial/data/*
+GO_Tutorial/__pycache__/*

@@ -5,9 +5,9 @@ from matplotlib import pyplot
 import numpy
 import kiwisolver
 
+# Retrieves GO Terms from QuickGO browser, explore annotations
 
 arab_uri = '/pub/databases/GO/goa/ARABIDOPSIS/goa_arabidopsis.gaf.gz'
-
 rec = get_ebi(arab_uri)
 
 not_count = 0

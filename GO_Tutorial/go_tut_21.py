@@ -1,10 +1,9 @@
-from go_utils import get_GO
-from goatools import obo_parser
+from go_utils import get_GO, deepest_common_ancestor
 from pprint import pprint
 
+# Load and investigate GO basic local file 
 
-go_obo = get_GO()
-go = obo_parser.GODag(go_obo, optional_attrs=['relationship'])
+go = get_GO(optional_attrs=['relationship'])
 
 # Excercise 2.1
 go_id = 'GO:0048527'
@@ -31,36 +30,6 @@ for term in go.values():
         growth_count += 1
         
 print(f'Number of GO terms with "growth" in their name: {growth_count}')
-
-def common_parent_go_ids(terms, go):
-    '''
-        This function finds the common ancestors in the GO 
-        tree of the list of terms in the input.
-    '''
-    # Find candidates from first
-    rec = go[terms[0]]
-    candidates = rec.get_all_parents()
-    candidates.update({terms[0]})
-    
-    # Find intersection with second to nth term
-    for term in terms[1:]:
-        rec = go[term]
-        parents = rec.get_all_parents()
-        parents.update({term})
-        
-        # Find the intersection with the candidates, and update.
-        candidates.intersection_update(parents)
-        
-    return candidates
-
-def deepest_common_ancestor(terms, go):
-    '''
-        This function gets the nearest common ancestor 
-        using the above function.
-        Only returns single most specific - assumes unique exists.
-    '''
-    # Take the element at maximum depth. 
-    return max(common_parent_go_ids(terms, go), key=lambda t: go[t].depth)
 
 go_id1 = 'GO:0097178'
 go_id_id1_dca = deepest_common_ancestor([go_id, go_id1], go)

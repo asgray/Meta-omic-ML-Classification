@@ -1,3 +1,6 @@
 data/*
 GO_Tutorial/data/*
 GO_Tutorial/__pycache__/*
+
+venv
+.ipynb_checkpoints

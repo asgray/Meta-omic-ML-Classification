@@ -13,6 +13,9 @@ import argparse
 import requests
 import pandas as pd
 from pathlib import Path
+from tqdm import tqdm
+from playsound import playsound
+import concurrent.futures as cf
 
 # Method checks which of several urls on the IBDMDB site works for each sample set -----------------------------------
 def test_urls(row):
@@ -215,7 +218,7 @@ if set_flag and set_flag not in possible_set_flags:
     quit()
 
 # import metadata file
-df = pd.read_csv(data_path)
+df = pd.read_csv(data_path, header=None)
 
 # run methods based on arg flags
 if args.url:
